@@ -1,5 +1,5 @@
 # PriceSnap
-### Barcode Scan, Typed Price Comparison, and In-Stock Ranking with SwiftUI and Fastify
+### Scan a shelf barcode, check if the same product is cheaper online, buy it there if it is
 
 ![Swift](https://img.shields.io/badge/Swift-iOS-orange)
 ![TypeScript](https://img.shields.io/badge/TypeScript-API-blue)
@@ -10,42 +10,42 @@
 
 ## Project Overview
 
-The goal of this project is to scan a product barcode on an iPhone, look up that product on a backend, and show which store has the best price that is actually in stock.
+You are in a store. You pick up a product. Before you pay the shelf price, you scan the barcode.
 
-I built this as a two-layer system: a SwiftUI client for camera scanning and results, and a TypeScript Fastify API for validation, ranking, and deal scoring. The phone should not invent prices. It asks the API for a product and renders what comes back.
+PriceSnap looks up that barcode and shows online prices from Amazon, Walmart, Target, eBay, and Best Buy. If an in-stock listing is cheaper than buying it in front of you, you order it there instead.
 
-The main technical problem is that store data is messy. One retailer can be cheaper but out of stock. Another can be slightly more expensive but available. If the UI just sorts by raw price, an out-of-stock listing can look like the winner. The API ranks in-stock offers first, then by price, and scores the best in-stock price against a 90-day average.
+That is the whole product: save money at the shelf. If you tap through to a retailer, the long-term plan is an affiliate link so the app can take a commission. That checkout link is not wired in this version.
 
-This version uses sample offers for Amazon, Walmart, Target, eBay, and Best Buy. Paid retailer APIs and scraping were out of scope. The contract is written so a live source can replace the dataset later without changing the iOS models.
+I built it as two pieces. The iPhone app scans the barcode and shows the result. A TypeScript API owns ranking: in-stock first, then cheapest price, then a deal score against a 90-day average. The phone does not invent prices.
+
+This build uses sample retailer data. Live store feeds need API keys and break often. The scan → lookup → rank → UI path is real. Replacing the sample table later should not require new iOS models.
 
 ## Software Architecture
 
-The app and API share the same product shape: barcode, name, brand, offers, deal score, and 90-day average.
-
 ```text
-iPhone camera (AVFoundation)
+in-store scan (AVFoundation)
         ↓
-   barcode string
+   barcode
         ↓
 GET /products/:barcode
         ↓
-Zod checks the barcode is 8–14 digits
+Zod: barcode is 8–14 digits
         ↓
-lookup sample product
+sample offers (Amazon, Walmart, Target, eBay, Best Buy)
         ↓
 comparison.ts
-  - in-stock offers first
-  - cheapest in-stock price
-  - deal score vs 90-day average
+  ignore out-of-stock as "best"
+  cheapest available price
+  deal score vs 90-day average
         ↓
-SwiftUI ResultView
+ResultView (buy online if it is cheaper)
 ```
 
 ```text
 PriceSnap/
-├── PriceSnap/           # SwiftUI app
+├── PriceSnap/           SwiftUI app
 ├── PriceSnap.xcodeproj
-└── pricesnap-api/       # Fastify API
+└── pricesnap-api/
     ├── src/types.ts
     ├── src/mockData.ts
     ├── src/comparison.ts
@@ -55,29 +55,20 @@ PriceSnap/
 
 ## Deal Score
 
-The API scores the best in-stock price against `avgPrice90Day`:
+Best price means cheapest **in stock**. Out-of-stock rows still show. They cannot win.
 
 | Score | Rule |
 |---|---|
-| `great` | more than 10% below average |
-| `good` | below average, but 10% or less |
-| `fair` | equal to average |
+| `great` | more than 10% below the 90-day average |
+| `good` | below average, 10% or less |
+| `fair` | at average |
 | `overpriced` | above average |
-
-Out-of-stock offers still show in the list. They cannot be selected as the best price.
 
 ## Technical Stack
 
-**Client**
-- Swift / SwiftUI
-- AVFoundation barcode scanning (EAN-13, EAN-8, UPC-E, QR, Code 128)
+**Client:** Swift, SwiftUI, AVFoundation (EAN-13, EAN-8, UPC-E, QR, Code 128)
 
-**API**
-- TypeScript
-- Fastify
-- Zod
-- Vitest
-- Docker
+**API:** TypeScript, Fastify, Zod, Vitest, Docker
 
 ## Setup
 
@@ -100,23 +91,27 @@ Demo barcode: `0194252914687` (Nike Air Max 270).
 
 ### iOS
 
-1. Open `PriceSnap.xcodeproj` in Xcode.
-2. Keep the API running on port 3000.
-3. Run in the iPhone simulator for local API calls (`http://localhost:3000`).
-4. Use a physical iPhone for camera scanning. On device, change the API base URL to your Mac's Wi-Fi IP.
+1. Open `PriceSnap.xcodeproj`.
+2. Leave the API on port 3000.
+3. Simulator works with `http://localhost:3000`.
+4. Real camera needs a phone. On device, point the app at your Mac's Wi-Fi IP, not localhost.
 
 ## Engineering Challenges
 
-### Shared contract between Swift and TypeScript
+### Shelf vs online, without a typed-in shelf price
 
-The iOS models and the API types have to stay in sync. If the API returns `offers` and Swift still expects `prices`, decoding fails. I kept one product shape on both sides and validated barcodes in the API with Zod, because TypeScript types are gone at runtime.
+The app does not ask you to type the store's sticker price. You scan, then compare online listings. If the best in-stock online price is clearly under what you are looking at on the shelf, you skip the checkout line.
 
-### In-stock ranking
+### Out-of-stock cannot look like a deal
 
-A cheaper out-of-stock offer should not win. `comparison.ts` sorts available offers first, then by price. The deal score uses the cheapest in-stock price, not the cheapest number in the list.
+A $38 eBay listing that is not in stock should not beat a $46 Amazon listing that ships. Ranking puts in-stock first.
 
-### Sample data instead of live retailer APIs
+### Same product shape on iPhone and API
 
-Amazon / Walmart / Target feeds need keys, rate limits, and unstable HTML. For this version the API returns a small fixture set so the scan → request → ranking → UI path is testable. The ranking logic does not depend on how the offers were collected.
+Swift and TypeScript both use barcode, offers, deal score, 90-day average. Zod checks the barcode at runtime because TypeScript types do not exist on the wire.
+
+### Affiliate / commission
+
+The product idea is: you save money, the app earns a cut if you buy through the retailer link. This repo does not open those links yet. The result screen is where that tap would go.
 
 ____
