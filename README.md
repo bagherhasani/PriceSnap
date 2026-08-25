@@ -22,6 +22,12 @@ This build uses sample retailer data. Live store feeds need API keys and break o
 
 ## Software Architecture
 
+The flow is split the same way the ZED tracker was: input, lookup, ranking, then UI. Dashed box is not built yet.
+
+<p align="center">
+  <img src="assets/architecture.svg" alt="PriceSnap architecture: in-store scan, iOS app, TypeScript API, retailer listings" width="900">
+</p>
+
 ```text
 in-store scan (AVFoundation)
         ↓
@@ -95,23 +101,3 @@ Demo barcode: `0194252914687` (Nike Air Max 270).
 2. Leave the API on port 3000.
 3. Simulator works with `http://localhost:3000`.
 4. Real camera needs a phone. On device, point the app at your Mac's Wi-Fi IP, not localhost.
-
-## Engineering Challenges
-
-### Shelf vs online, without a typed-in shelf price
-
-The app does not ask you to type the store's sticker price. You scan, then compare online listings. If the best in-stock online price is clearly under what you are looking at on the shelf, you skip the checkout line.
-
-### Out-of-stock cannot look like a deal
-
-A $38 eBay listing that is not in stock should not beat a $46 Amazon listing that ships. Ranking puts in-stock first.
-
-### Same product shape on iPhone and API
-
-Swift and TypeScript both use barcode, offers, deal score, 90-day average. Zod checks the barcode at runtime because TypeScript types do not exist on the wire.
-
-### Affiliate / commission
-
-The product idea is: you save money, the app earns a cut if you buy through the retailer link. This repo does not open those links yet. The result screen is where that tap would go.
-
-____
