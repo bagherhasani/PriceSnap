@@ -5,9 +5,9 @@ import { ProductSnapshot, RetailerOffer } from './types'
 describe('sortOffers', () => {
   it('puts in-stock offers before out-of-stock offers', () => {
     const offers: RetailerOffer[] = [
-      { store: 'eBay', price: 38, logo: 'tag.fill', inStock: false },
-      { store: 'Amazon', price: 45.99, logo: 'shippingbox.fill', inStock: true },
-      { store: 'Target', price: 49, logo: 'target', inStock: true },
+      { store: 'eBay', price: 38, logo: 'tag.fill', inStock: false, url: 'https://www.ebay.com' },
+      { store: 'Amazon', price: 45.99, logo: 'shippingbox.fill', inStock: true, url: 'https://www.amazon.com' },
+      { store: 'Target', price: 49, logo: 'target', inStock: true, url: 'https://www.target.com' },
     ]
 
     expect(sortOffers(offers).map((offer) => offer.store)).toEqual([
@@ -21,9 +21,9 @@ describe('sortOffers', () => {
 describe('findCheapest', () => {
   it('returns the cheapest in-stock offer', () => {
     const offers: RetailerOffer[] = [
-      { store: 'eBay', price: 38, logo: 'tag.fill', inStock: false },
-      { store: 'Amazon', price: 45.99, logo: 'shippingbox.fill', inStock: true },
-      { store: 'Walmart', price: 42, logo: 'cart.fill', inStock: true },
+      { store: 'eBay', price: 38, logo: 'tag.fill', inStock: false, url: 'https://www.ebay.com' },
+      { store: 'Amazon', price: 45.99, logo: 'shippingbox.fill', inStock: true, url: 'https://www.amazon.com' },
+      { store: 'Walmart', price: 42, logo: 'cart.fill', inStock: true, url: 'https://www.walmart.com' },
     ]
 
     expect(findCheapest(offers)?.store).toBe('Walmart')
@@ -48,10 +48,11 @@ describe('buildProductResult', () => {
       brand: 'Test Brand',
       image: 'shippingbox.fill',
       avgPrice90Day: 100,
+      inStorePrice: 110,
       offers: [
-        { store: 'Store B', price: 95, logo: 'b.circle.fill', inStock: true },
-        { store: 'Store A', price: 80, logo: 'a.circle.fill', inStock: true },
-        { store: 'Store C', price: 70, logo: 'c.circle.fill', inStock: false },
+        { store: 'Store B', price: 95, logo: 'b.circle.fill', inStock: true, url: 'https://example.com/b' },
+        { store: 'Store A', price: 80, logo: 'a.circle.fill', inStock: true, url: 'https://example.com/a' },
+        { store: 'Store C', price: 70, logo: 'c.circle.fill', inStock: false, url: 'https://example.com/c' },
       ],
     }
 
@@ -63,5 +64,6 @@ describe('buildProductResult', () => {
       'Store C',
     ])
     expect(result.dealScore).toBe('great')
+    expect(result.offers[0].url).toBe('https://example.com/a')
   })
 })

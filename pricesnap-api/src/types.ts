@@ -8,6 +8,7 @@ export interface RetailerOffer {
   price: number
   logo: string
   inStock: boolean
+  url: string
 }
 
 export interface ProductResult {
@@ -18,6 +19,7 @@ export interface ProductResult {
   offers: RetailerOffer[]
   dealScore: DealScore
   avgPrice90Day: number
+  inStorePrice: number
 }
 
 export type ProductSnapshot = Omit<ProductResult, 'dealScore'>

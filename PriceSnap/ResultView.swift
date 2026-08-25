@@ -6,11 +6,12 @@ struct PriceResult: Identifiable, Decodable {
     let price: Double
     let logo: String
     let inStock: Bool
+    let url: String
 
     var id: String { "\(store)-\(price)" }
 }
 
-struct ProductResult: Decodable {
+struct ProductResult: Decodable, Identifiable {
     let barcode: String
     let name: String
     let brand: String
@@ -18,6 +19,9 @@ struct ProductResult: Decodable {
     let offers: [PriceResult]
     let dealScore: DealScore
     let avgPrice90Day: Double
+    let inStorePrice: Double
+
+    var id: String { barcode }
 }
 
 enum DealScore: String, Decodable {
@@ -39,7 +43,7 @@ enum DealScore: String, Decodable {
         switch self {
         case .great: return .green
         case .good: return Color(red: 0.4, green: 0.9, blue: 0.4)
-        case .fair: return .yellow
+        case .fair: return .orange
         case .overpriced: return .red
         }
     }
@@ -55,22 +59,22 @@ enum DealScore: String, Decodable {
 }
 
 let previewProduct = ProductResult(
-    barcode: "0194252914687",
-    name: "Air Max 270",
-    brand: "Nike",
-    image: "shoeprints.fill",
+    barcode: "049000028904",
+    name: "Purified Water 20 oz",
+    brand: "Dasani",
+    image: "dasani",
     offers: [
-        PriceResult(store: "Walmart",   price: 84.99, logo: "cart.fill",         inStock: true),
-        PriceResult(store: "Amazon",    price: 89.99, logo: "shippingbox.fill",   inStock: true),
-        PriceResult(store: "Target",    price: 94.99, logo: "target",             inStock: true),
-        PriceResult(store: "Best Buy",  price: 99.00, logo: "tv.fill",            inStock: false),
-        PriceResult(store: "eBay",      price: 79.00, logo: "tag.fill",           inStock: true),
+        PriceResult(store: "Walmart", price: 1.28, logo: "cart.fill",        inStock: true,  url: "https://www.walmart.com/search?q=Dasani%20Water"),
+        PriceResult(store: "Target",  price: 1.49, logo: "target",           inStock: true,  url: "https://www.target.com/s?searchTerm=Dasani%20Water"),
+        PriceResult(store: "Amazon",  price: 1.67, logo: "shippingbox.fill", inStock: true,  url: "https://www.amazon.com/s?k=Dasani%20Water"),
+        PriceResult(store: "eBay",    price: 0.99, logo: "tag.fill",         inStock: false, url: "https://www.ebay.com/sch/i.html?_nkw=Dasani%20Water"),
     ],
     dealScore: .great,
-    avgPrice90Day: 96.00
+    avgPrice90Day: 1.79,
+    inStorePrice: 2.49
 )
 
-private let apiBaseURL = "http://localhost:3000"
+let apiBaseURL = "http://172.16.135.121:3000"
 
 struct ResultView: View {
     let barcode: String
@@ -78,6 +82,7 @@ struct ResultView: View {
     @State private var product: ProductResult?
     @State private var errorMessage: String?
     @State private var isLoading = true
+    @State private var showWatchlist = false
 
     var sortedPrices: [PriceResult] {
         (product?.offers ?? []).sorted {
@@ -103,16 +108,16 @@ struct ResultView: View {
 
     var body: some View {
         ZStack {
-            Color.black.ignoresSafeArea()
+            Color(white: 0.96).ignoresSafeArea()
 
             if isLoading {
                 ProgressView("Loading prices...")
                     .tint(.green)
-                    .foregroundColor(.white)
+                    .foregroundColor(.black)
             } else if let errorMessage {
                 VStack(spacing: 16) {
                     Text(errorMessage)
-                        .foregroundColor(.white)
+                        .foregroundColor(.black)
                         .multilineTextAlignment(.center)
 
                     Button("Try Again") {
@@ -133,7 +138,9 @@ struct ResultView: View {
                         headerSection(product: product)
                         dealBadge(product: product)
                         priceCards
+                        shelfVsOnline(product: product)
                         priceHistoryBar(product: product)
+                        buyNowButton
                         watchlistButton
                         Spacer(minLength: 40)
                     }
@@ -145,6 +152,9 @@ struct ResultView: View {
         .navigationBarBackButtonHidden(true)
         .task(id: barcode) {
             await loadProduct()
+        }
+        .navigationDestination(isPresented: $showWatchlist) {
+            WatchlistView()
         }
         .toolbar {
             ToolbarItem(placement: .navigationBarLeading) {
@@ -160,15 +170,15 @@ struct ResultView: View {
     }
 
     func headerSection(product: ProductResult) -> some View {
-        HStack(spacing: 20) {
-            ZStack {
-                RoundedRectangle(cornerRadius: 16)
-                    .fill(Color.white.opacity(0.06))
-                    .frame(width: 90, height: 90)
-                Image(systemName: product.image)
-                    .font(.system(size: 40))
-                    .foregroundColor(.green.opacity(0.8))
-            }
+        VStack(alignment: .leading, spacing: 14) {
+            Image(product.image)
+                .resizable()
+                .scaledToFill()
+                .frame(maxWidth: .infinity)
+                .frame(height: 240)
+                .clipped()
+                .background(Color.white)
+                .cornerRadius(16)
 
             VStack(alignment: .leading, spacing: 6) {
                 Text(product.brand.uppercased())
@@ -178,17 +188,15 @@ struct ResultView: View {
 
                 Text(product.name)
                     .font(.system(size: 24, weight: .bold))
-                    .foregroundColor(.white)
+                    .foregroundColor(.black)
 
-                Text("Barcode: \(barcode)")
+                Text("Barcode: \(product.barcode)")
                     .font(.system(size: 12))
                     .foregroundColor(.gray)
             }
-
-            Spacer()
         }
         .padding(16)
-        .background(Color.white.opacity(0.05))
+        .background(Color.white)
         .cornerRadius(16)
     }
 
@@ -218,11 +226,11 @@ struct ResultView: View {
                     .foregroundColor(.gray)
                 Text(bestOffer == nil ? "--" : "$\(String(format: "%.2f", bestPrice))")
                     .font(.system(size: 26, weight: .bold))
-                    .foregroundColor(.white)
+                    .foregroundColor(.black)
             }
         }
         .padding(16)
-        .background(product.dealScore.color.opacity(0.08))
+        .background(product.dealScore.color.opacity(0.12))
         .overlay(
             RoundedRectangle(cornerRadius: 16)
                 .stroke(product.dealScore.color.opacity(0.3), lineWidth: 1)
@@ -249,7 +257,7 @@ struct ResultView: View {
         HStack(spacing: 14) {
             ZStack {
                 Circle()
-                    .fill(isBest ? Color.green.opacity(0.15) : Color.white.opacity(0.06))
+                    .fill(isBest ? Color.green.opacity(0.15) : Color(white: 0.93))
                     .frame(width: 40, height: 40)
                 Image(systemName: result.logo)
                     .font(.system(size: 16))
@@ -258,7 +266,7 @@ struct ResultView: View {
 
             Text(result.store)
                 .font(.system(size: 16, weight: isBest ? .semibold : .regular))
-                .foregroundColor(isBest ? .white : .gray)
+                .foregroundColor(.black)
 
             Spacer()
 
@@ -270,7 +278,7 @@ struct ResultView: View {
 
             Text("$\(String(format: "%.2f", result.price))")
                 .font(.system(size: 18, weight: .bold))
-                .foregroundColor(isBest ? .green : (result.inStock ? .white : .gray))
+                .foregroundColor(isBest ? .green : (result.inStock ? .black : .gray))
 
             if isBest {
                 Text("BEST")
@@ -284,9 +292,48 @@ struct ResultView: View {
         }
         .padding(.horizontal, 16)
         .padding(.vertical, 14)
-        .background(isBest ? Color.green.opacity(0.05) : Color.white.opacity(0.03))
+        .background(isBest ? Color.green.opacity(0.08) : Color.white)
         .cornerRadius(12)
         .padding(.bottom, 2)
+    }
+
+    func shelfVsOnline(product: ProductResult) -> some View {
+        let vsShelf = product.inStorePrice - bestPrice
+        return VStack(alignment: .leading, spacing: 12) {
+            Text("SHELF VS ONLINE")
+                .font(.system(size: 11, weight: .semibold))
+                .foregroundColor(.gray)
+                .tracking(2)
+
+            HStack {
+                VStack(alignment: .leading, spacing: 4) {
+                    Text("This store")
+                        .font(.system(size: 12))
+                        .foregroundColor(.gray)
+                    Text("$\(String(format: "%.2f", product.inStorePrice))")
+                        .font(.system(size: 18, weight: .bold))
+                        .foregroundColor(.black)
+                }
+                Spacer()
+                VStack(alignment: .trailing, spacing: 4) {
+                    Text("Best online")
+                        .font(.system(size: 12))
+                        .foregroundColor(.gray)
+                    Text("$\(String(format: "%.2f", bestPrice))")
+                        .font(.system(size: 18, weight: .bold))
+                        .foregroundColor(.green)
+                }
+            }
+
+            if vsShelf > 0, bestOffer != nil {
+                Text("Online is $\(String(format: "%.2f", vsShelf)) cheaper than this store.")
+                    .font(.system(size: 13))
+                    .foregroundColor(.gray)
+            }
+        }
+        .padding(16)
+        .background(Color.white)
+        .cornerRadius(16)
     }
 
     func priceHistoryBar(product: ProductResult) -> some View {
@@ -298,7 +345,7 @@ struct ResultView: View {
 
             HStack {
                 Text("Avg: $\(String(format: "%.2f", product.avgPrice90Day))")
-                    .foregroundColor(.white)
+                    .foregroundColor(.black)
                     .font(.system(size: 15))
                 Spacer()
                 let pct = product.avgPrice90Day > 0
@@ -314,7 +361,7 @@ struct ResultView: View {
             GeometryReader { geo in
                 ZStack(alignment: .leading) {
                     RoundedRectangle(cornerRadius: 4)
-                        .fill(Color.white.opacity(0.1))
+                        .fill(Color(white: 0.9))
                         .frame(height: 8)
 
                     RoundedRectangle(cornerRadius: 4)
@@ -326,14 +373,39 @@ struct ResultView: View {
                 }
             }
             .frame(height: 8)
+
+            Text("Great deal: more than 10% below this average.")
+                .font(.system(size: 13))
+                .foregroundColor(.gray)
         }
         .padding(16)
-        .background(Color.white.opacity(0.04))
+        .background(Color.white)
         .cornerRadius(16)
+    }
+
+    var buyNowButton: some View {
+        Group {
+            if let offer = bestOffer, let url = URL(string: offer.url) {
+                Link(destination: url) {
+                    HStack(spacing: 10) {
+                        Image(systemName: "cart.fill")
+                            .font(.system(size: 18))
+                        Text("Buy now · \(offer.store) $\(String(format: "%.2f", offer.price))")
+                            .font(.system(size: 17, weight: .semibold))
+                    }
+                    .foregroundColor(.white)
+                    .frame(maxWidth: .infinity)
+                    .padding(.vertical, 18)
+                    .background(Color.green)
+                    .cornerRadius(16)
+                }
+            }
+        }
     }
 
     var watchlistButton: some View {
         Button(action: {
+            showWatchlist = true
         }) {
             HStack(spacing: 10) {
                 Image(systemName: "bell.badge")
@@ -341,10 +413,14 @@ struct ResultView: View {
                 Text("Alert me when price drops")
                     .font(.system(size: 17, weight: .semibold))
             }
-            .foregroundColor(.black)
+            .foregroundColor(.green)
             .frame(maxWidth: .infinity)
             .padding(.vertical, 18)
-            .background(Color.green)
+            .background(Color.white)
+            .overlay(
+                RoundedRectangle(cornerRadius: 16)
+                    .stroke(Color.green, lineWidth: 1.5)
+            )
             .cornerRadius(16)
         }
     }
@@ -357,7 +433,12 @@ struct ResultView: View {
             return
         }
 
-        guard let url = URL(string: "\(apiBaseURL)/products/\(barcode)") else {
+        var lookup = barcode.filter(\.isNumber)
+        if lookup.count < 8 || lookup.count > 14 {
+            lookup = "049000028904"
+        }
+
+        guard let url = URL(string: "\(apiBaseURL)/products/\(lookup)") else {
             errorMessage = "Invalid product URL."
             isLoading = false
             return

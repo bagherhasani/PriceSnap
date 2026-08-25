@@ -1,9 +1,13 @@
 import { FastifyInstance } from 'fastify'
 import { buildProductResult } from '../comparison'
-import { products } from '../mockData'
+import { products, resolveProduct } from '../mockData'
 import { BarcodeParamsSchema } from '../types'
 
 export async function productRoutes(app: FastifyInstance) {
+  app.get('/products', async () => {
+    return Object.values(products).map(buildProductResult)
+  })
+
   app.get('/products/:barcode', async (request, reply) => {
     const parsed = BarcodeParamsSchema.safeParse(request.params)
 
@@ -13,14 +17,7 @@ export async function productRoutes(app: FastifyInstance) {
       })
     }
 
-    const product = products[parsed.data.barcode]
-
-    if (!product) {
-      return reply.status(404).send({
-        error: 'Product not found',
-      })
-    }
-
+    const product = resolveProduct(parsed.data.barcode)
     return buildProductResult(product)
   })
 }

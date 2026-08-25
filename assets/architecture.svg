@@ -1,0 +1,81 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="720" viewBox="0 0 1200 720" role="img" aria-label="PriceSnap architecture">
+  <rect width="1200" height="720" fill="#111111"/>
+  <text x="40" y="48" fill="#22c55e" font-family="ui-sans-serif, Helvetica, Arial, sans-serif" font-size="28" font-weight="700">PriceSnap architecture</text>
+  <text x="40" y="78" fill="#9ca3af" font-family="ui-sans-serif, Helvetica, Arial, sans-serif" font-size="15">Scan in-store ’ compare online prices ’ buy cheaper listing if it is in stock</text>
+
+  <!-- columns -->
+  <rect x="40" y="110" width="250" height="540" rx="16" fill="#1a1a1a" stroke="#2a2a2a"/>
+  <text x="60" y="145" fill="#9ca3af" font-family="ui-sans-serif, Helvetica, Arial, sans-serif" font-size="13" letter-spacing="1.5">1. IN STORE</text>
+  <rect x="60" y="165" width="210" height="90" rx="10" fill="#161616" stroke="#22c55e"/>
+  <text x="75" y="200" fill="#ffffff" font-family="ui-sans-serif, Helvetica, Arial, sans-serif" font-size="16" font-weight="600">Shopper + shelf</text>
+  <text x="75" y="224" fill="#9ca3af" font-family="ui-sans-serif, Helvetica, Arial, sans-serif" font-size="13">Sees sticker price</text>
+  <rect x="60" y="275" width="210" height="90" rx="10" fill="#161616" stroke="#333"/>
+  <text x="75" y="310" fill="#ffffff" font-family="ui-sans-serif, Helvetica, Arial, sans-serif" font-size="16" font-weight="600">Barcode</text>
+  <text x="75" y="334" fill="#9ca3af" font-family="ui-sans-serif, Helvetica, Arial, sans-serif" font-size="13">EAN-13 / UPC / QR</text>
+  <rect x="60" y="385" width="210" height="110" rx="10" fill="#161616" stroke="#333"/>
+  <text x="75" y="420" fill="#ffffff" font-family="ui-sans-serif, Helvetica, Arial, sans-serif" font-size="16" font-weight="600">Decision</text>
+  <text x="75" y="444" fill="#9ca3af" font-family="ui-sans-serif, Helvetica, Arial, sans-serif" font-size="13">Buy on shelf, or skip</text>
+  <text x="75" y="464" fill="#9ca3af" font-family="ui-sans-serif, Helvetica, Arial, sans-serif" font-size="13">and order online</text>
+
+  <rect x="320" y="110" width="250" height="540" rx="16" fill="#1a1a1a" stroke="#2a2a2a"/>
+  <text x="340" y="145" fill="#9ca3af" font-family="ui-sans-serif, Helvetica, Arial, sans-serif" font-size="13" letter-spacing="1.5">2. iOS APP</text>
+  <rect x="340" y="165" width="210" height="90" rx="10" fill="#161616" stroke="#22c55e"/>
+  <text x="355" y="200" fill="#ffffff" font-family="ui-sans-serif, Helvetica, Arial, sans-serif" font-size="16" font-weight="600">ScannerView</text>
+  <text x="355" y="224" fill="#9ca3af" font-family="ui-sans-serif, Helvetica, Arial, sans-serif" font-size="13">AVFoundation camera</text>
+  <rect x="340" y="275" width="210" height="90" rx="10" fill="#161616" stroke="#333"/>
+  <text x="355" y="310" fill="#ffffff" font-family="ui-sans-serif, Helvetica, Arial, sans-serif" font-size="16" font-weight="600">URLSession</text>
+  <text x="355" y="334" fill="#9ca3af" font-family="ui-sans-serif, Helvetica, Arial, sans-serif" font-size="13">GET /products/:barcode</text>
+  <rect x="340" y="385" width="210" height="130" rx="10" fill="#161616" stroke="#22c55e"/>
+  <text x="355" y="420" fill="#ffffff" font-family="ui-sans-serif, Helvetica, Arial, sans-serif" font-size="16" font-weight="600">ResultView</text>
+  <text x="355" y="444" fill="#9ca3af" font-family="ui-sans-serif, Helvetica, Arial, sans-serif" font-size="13">Store list + BEST badge</text>
+  <text x="355" y="464" fill="#9ca3af" font-family="ui-sans-serif, Helvetica, Arial, sans-serif" font-size="13">Deal score vs 90-day avg</text>
+  <text x="355" y="492" fill="#6b7280" font-family="ui-sans-serif, Helvetica, Arial, sans-serif" font-size="12">Affiliate tap: not wired yet</text>
+
+  <rect x="600" y="110" width="270" height="540" rx="16" fill="#1a1a1a" stroke="#2a2a2a"/>
+  <text x="620" y="145" fill="#9ca3af" font-family="ui-sans-serif, Helvetica, Arial, sans-serif" font-size="13" letter-spacing="1.5">3. TYPESCRIPT API</text>
+  <rect x="620" y="165" width="230" height="70" rx="10" fill="#161616" stroke="#22c55e"/>
+  <text x="635" y="195" fill="#ffffff" font-family="ui-sans-serif, Helvetica, Arial, sans-serif" font-size="16" font-weight="600">Fastify</text>
+  <text x="635" y="218" fill="#9ca3af" font-family="ui-sans-serif, Helvetica, Arial, sans-serif" font-size="13">server.ts + product routes</text>
+  <rect x="620" y="250" width="230" height="70" rx="10" fill="#161616" stroke="#333"/>
+  <text x="635" y="280" fill="#ffffff" font-family="ui-sans-serif, Helvetica, Arial, sans-serif" font-size="16" font-weight="600">Zod</text>
+  <text x="635" y="303" fill="#9ca3af" font-family="ui-sans-serif, Helvetica, Arial, sans-serif" font-size="13">barcode 814 digits</text>
+  <rect x="620" y="335" width="230" height="90" rx="10" fill="#161616" stroke="#22c55e"/>
+  <text x="635" y="370" fill="#ffffff" font-family="ui-sans-serif, Helvetica, Arial, sans-serif" font-size="16" font-weight="600">comparison.ts</text>
+  <text x="635" y="394" fill="#9ca3af" font-family="ui-sans-serif, Helvetica, Arial, sans-serif" font-size="13">in-stock first, then price</text>
+  <text x="635" y="414" fill="#9ca3af" font-family="ui-sans-serif, Helvetica, Arial, sans-serif" font-size="13">deal score: great/good/fair</text>
+  <rect x="620" y="440" width="230" height="90" rx="10" fill="#161616" stroke="#333"/>
+  <text x="635" y="475" fill="#ffffff" font-family="ui-sans-serif, Helvetica, Arial, sans-serif" font-size="16" font-weight="600">mockData.ts</text>
+  <text x="635" y="499" fill="#9ca3af" font-family="ui-sans-serif, Helvetica, Arial, sans-serif" font-size="13">sample offers for now</text>
+  <text x="635" y="519" fill="#9ca3af" font-family="ui-sans-serif, Helvetica, Arial, sans-serif" font-size="13">swap later, same types</text>
+
+  <rect x="900" y="110" width="260" height="540" rx="16" fill="#1a1a1a" stroke="#2a2a2a"/>
+  <text x="920" y="145" fill="#9ca3af" font-family="ui-sans-serif, Helvetica, Arial, sans-serif" font-size="13" letter-spacing="1.5">4. RETAILERS</text>
+  <rect x="920" y="165" width="220" height="250" rx="10" fill="#161616" stroke="#333"/>
+  <text x="940" y="200" fill="#ffffff" font-family="ui-sans-serif, Helvetica, Arial, sans-serif" font-size="16" font-weight="600">Online listings</text>
+  <text x="940" y="230" fill="#d1d5db" font-family="ui-sans-serif, Helvetica, Arial, sans-serif" font-size="14">Amazon</text>
+  <text x="940" y="256" fill="#d1d5db" font-family="ui-sans-serif, Helvetica, Arial, sans-serif" font-size="14">Walmart</text>
+  <text x="940" y="282" fill="#d1d5db" font-family="ui-sans-serif, Helvetica, Arial, sans-serif" font-size="14">Target</text>
+  <text x="940" y="308" fill="#d1d5db" font-family="ui-sans-serif, Helvetica, Arial, sans-serif" font-size="14">eBay</text>
+  <text x="940" y="334" fill="#d1d5db" font-family="ui-sans-serif, Helvetica, Arial, sans-serif" font-size="14">Best Buy</text>
+  <text x="940" y="370" fill="#6b7280" font-family="ui-sans-serif, Helvetica, Arial, sans-serif" font-size="12">this version: fixtures</text>
+  <rect x="920" y="435" width="220" height="140" rx="10" fill="#161616" stroke="#22c55e" stroke-dasharray="6 4"/>
+  <text x="940" y="475" fill="#22c55e" font-family="ui-sans-serif, Helvetica, Arial, sans-serif" font-size="16" font-weight="600">Later</text>
+  <text x="940" y="502" fill="#9ca3af" font-family="ui-sans-serif, Helvetica, Arial, sans-serif" font-size="13">live retailer APIs</text>
+  <text x="940" y="522" fill="#9ca3af" font-family="ui-sans-serif, Helvetica, Arial, sans-serif" font-size="13">affiliate / commission</text>
+  <text x="940" y="542" fill="#9ca3af" font-family="ui-sans-serif, Helvetica, Arial, sans-serif" font-size="13">links on each store row</text>
+
+  <!-- arrows -->
+  <path d="M290 210 L320 210" stroke="#22c55e" stroke-width="2" marker-end="url(#arrow)"/>
+  <path d="M570 320 L600 320" stroke="#22c55e" stroke-width="2" marker-end="url(#arrow)"/>
+  <path d="M870 280 L900 280" stroke="#22c55e" stroke-width="2" marker-end="url(#arrow)"/>
+  <path d="M570 450 L600 450" stroke="#555" stroke-width="2" marker-end="url(#arrowGray)"/>
+
+  <defs>
+    <marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto">
+      <path d="M0,0 L8,4 L0,8 Z" fill="#22c55e"/>
+    </marker>
+    <marker id="arrowGray" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto">
+      <path d="M0,0 L8,4 L0,8 Z" fill="#555555"/>
+    </marker>
+  </defs>
+</svg>

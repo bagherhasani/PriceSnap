@@ -20,6 +20,20 @@ I built it as two pieces. The iPhone app scans the barcode and shows the result.
 
 This build uses sample retailer data. Live store feeds need API keys and break often. The scan → lookup → rank → UI path is real. Replacing the sample table later should not require new iOS models.
 
+## Demo
+
+[Watch the walkthrough](https://youtu.be/YOUR_VIDEO_ID)
+
+<p align="center">
+  <img src="assets/home.png" alt="Home: scan barcode" width="180">
+  <img src="assets/samples.png" alt="Sample product catalog" width="180">
+  <img src="assets/watchlist.png" alt="Price drop watchlist" width="180">
+</p>
+<p align="center">
+  <img src="assets/result.png" alt="Dasani result: great deal and retailer prices" width="180">
+  <img src="assets/result-buy.png" alt="Shelf vs online, 90-day average, Buy now" width="180">
+</p>
+
 ## Software Architecture
 
 The flow is split the same way the ZED tracker was: input, lookup, ranking, then UI. Dashed box is not built yet.
@@ -93,7 +107,7 @@ npm run dev
 npm test
 ```
 
-Demo barcode: `0194252914687` (Nike Air Max 270).
+Unknown scans fall through to Dasani water (`049000028904`). Nike: `0194252914687`. Full catalog: `GET /products`.
 
 ### iOS
 

@@ -5,11 +5,13 @@ struct ContentView: View {
     @State private var isScanning = false
     @State private var scannedBarcode = ""
     @State private var showResult = false
+    @State private var showWatchlist = false
+    @State private var showCatalog = false
     
     var body: some View {
         NavigationStack {
             ZStack {
-                Color.black.ignoresSafeArea()
+                Color(white: 0.96).ignoresSafeArea()
                 
                 if isScanning {
                     ZStack {
@@ -58,7 +60,7 @@ struct ContentView: View {
                             
                             Text("PriceSnap")
                                 .font(.system(size: 36, weight: .bold))
-                                .foregroundColor(.white)
+                                .foregroundColor(.black)
                             
                             Text("Scan any product. Find the best price.")
                                 .font(.system(size: 16))
@@ -87,7 +89,7 @@ struct ContentView: View {
                                 Text("Scan Barcode")
                                     .font(.system(size: 20, weight: .semibold))
                             }
-                            .foregroundColor(.black)
+                            .foregroundColor(.white)
                             .frame(maxWidth: .infinity)
                             .padding(.vertical, 18)
                             .background(Color.green)
@@ -96,7 +98,19 @@ struct ContentView: View {
                         }
                         
                         Spacer()
-                        
+
+                        Button("Sample products") {
+                            showCatalog = true
+                        }
+                        .foregroundColor(.green)
+                        .font(.system(size: 16, weight: .semibold))
+
+                        Button("Watchlist") {
+                            showWatchlist = true
+                        }
+                        .foregroundColor(.green)
+                        .font(.system(size: 16, weight: .semibold))
+
                         Text("Tap scan to get started")
                             .font(.system(size: 14))
                             .foregroundColor(.gray.opacity(0.6))
@@ -107,6 +121,12 @@ struct ContentView: View {
             }
             .navigationDestination(isPresented: $showResult) {
                 ResultView(barcode: scannedBarcode)
+            }
+            .navigationDestination(isPresented: $showWatchlist) {
+                WatchlistView()
+            }
+            .navigationDestination(isPresented: $showCatalog) {
+                CatalogView()
             }
         }
     }
