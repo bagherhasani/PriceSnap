@@ -25,13 +25,15 @@ This build uses sample retailer data. Live store feeds need API keys and break o
 [Watch the walkthrough](https://youtu.be/YOUR_VIDEO_ID)
 
 <p align="center">
-  <img src="assets/home.png" alt="Home: scan barcode" width="180">
-  <img src="assets/samples.png" alt="Sample product catalog" width="180">
-  <img src="assets/watchlist.png" alt="Price drop watchlist" width="180">
+  <img src="assets/home.png" alt="Home: scan barcode" width="420">
+  <img src="assets/samples.png" alt="Sample product catalog" width="420">
 </p>
 <p align="center">
-  <img src="assets/result.png" alt="Dasani result: great deal and retailer prices" width="180">
-  <img src="assets/result-buy.png" alt="Shelf vs online, 90-day average, Buy now" width="180">
+  <img src="assets/watchlist.png" alt="Price drop watchlist" width="420">
+  <img src="assets/result.png" alt="Dasani result: great deal and retailer prices" width="420">
+</p>
+<p align="center">
+  <img src="assets/result-buy.png" alt="Shelf vs online, 90-day average, Buy now" width="420">
 </p>
 
 ## Software Architecture
