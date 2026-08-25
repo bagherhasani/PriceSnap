@@ -23,7 +23,6 @@ struct ProductResult: Decodable {
 enum DealScore: String, Decodable {
     case great
     case good
-    
     case fair
     case overpriced
 
@@ -72,8 +71,6 @@ let previewProduct = ProductResult(
 )
 
 private let apiBaseURL = "http://localhost:3000"
-
-// MARK: - Result View
 
 struct ResultView: View {
     let barcode: String
@@ -242,7 +239,7 @@ struct ResultView: View {
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(.bottom, 8)
 
-            ForEach(Array(sortedPrices.enumerated()), id: \.element.id) { index, result in
+            ForEach(sortedPrices) { result in
                 priceRow(result: result, isBest: result.id == bestOffer?.id)
             }
         }

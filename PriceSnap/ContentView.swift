@@ -105,7 +105,6 @@ struct ContentView: View {
                     .padding(.top, 80)
                 }
             }
-            // When showResult flips to true → navigate to ResultView
             .navigationDestination(isPresented: $showResult) {
                 ResultView(barcode: scannedBarcode)
             }
