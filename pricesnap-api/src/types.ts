@@ -25,5 +25,3 @@ export type ProductSnapshot = Omit<ProductResult, 'dealScore'>
 export const BarcodeParamsSchema = z.object({
   barcode: BarcodeSchema,
 })
-
-export type BarcodeParams = z.infer<typeof BarcodeParamsSchema>
