@@ -22,18 +22,27 @@ This build uses sample retailer data. Live store feeds need API keys and break o
 
 ## Demo
 
-[Watch the walkthrough](https://youtu.be/YOUR_VIDEO_ID)
+<p align="center">
+  <video src="https://github.com/bagherhasani/Zed-Detection/releases/download/pricesnapvideos/WhatsApp.Video.2026-08-25.at.14.57.53.mp4" width="480" controls>
+  </video>
+</p>
+
+[Watch the walkthrough](https://github.com/bagherhasani/Zed-Detection/releases/download/pricesnapvideos/WhatsApp.Video.2026-08-25.at.14.57.53.mp4)
 
 <p align="center">
-  <img src="assets/home.png" alt="Home: scan barcode" width="420">
-  <img src="assets/samples.png" alt="Sample product catalog" width="420">
+  <img src="assets/home.png" alt="Home: scan barcode" width="900">
 </p>
 <p align="center">
-  <img src="assets/watchlist.png" alt="Price drop watchlist" width="420">
-  <img src="assets/result.png" alt="Dasani result: great deal and retailer prices" width="420">
+  <img src="assets/samples.png" alt="Sample product catalog" width="900">
 </p>
 <p align="center">
-  <img src="assets/result-buy.png" alt="Shelf vs online, 90-day average, Buy now" width="420">
+  <img src="assets/watchlist.png" alt="Price drop watchlist" width="900">
+</p>
+<p align="center">
+  <img src="assets/result.png" alt="Dasani result: great deal and retailer prices" width="900">
+</p>
+<p align="center">
+  <img src="assets/result-buy.png" alt="Shelf vs online, 90-day average, Buy now" width="900">
 </p>
 
 ## Software Architecture
