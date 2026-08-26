@@ -38,19 +38,19 @@ https://github.com/user-attachments/assets/d02a4dbe-51c4-4dc8-9d50-341ac2f921bc
 </video>
 
 <p align="center">
-  <img src="assets/home.png" alt="Home: scan barcode" width="900">
+  <img src="assets/home.png" alt="Home: scan barcode" width="640">
 </p>
 <p align="center">
-  <img src="assets/samples.png" alt="Sample product catalog" width="900">
+  <img src="assets/samples.png" alt="Sample product catalog" width="640">
 </p>
 <p align="center">
-  <img src="assets/watchlist.png" alt="Price drop watchlist" width="900">
+  <img src="assets/watchlist.png" alt="Price drop watchlist" width="640">
 </p>
 <p align="center">
-  <img src="assets/result.png" alt="Dasani result: great deal and retailer prices" width="900">
+  <img src="assets/result.png" alt="Dasani result: great deal and retailer prices" width="640">
 </p>
 <p align="center">
-  <img src="assets/result-buy.png" alt="Shelf vs online, 90-day average, Buy now" width="900">
+  <img src="assets/result-buy.png" alt="Shelf vs online, 90-day average, Buy now" width="640">
 </p>
 
 ## Software Architecture
