@@ -22,12 +22,14 @@ This build uses sample retailer data. Live store feeds need API keys and break o
 
 ## Demo
 
-<p align="center">
-  <video src="https://github.com/bagherhasani/Zed-Detection/releases/download/pricesnapvideos/WhatsApp.Video.2026-08-25.at.14.57.53.mp4" width="480" controls>
-  </video>
-</p>
-
-[Watch the walkthrough](https://github.com/bagherhasani/Zed-Detection/releases/download/pricesnapvideos/WhatsApp.Video.2026-08-25.at.14.57.53.mp4)
+<video src="https://github.com/user-attachments/assets/6ef8f8bb-d1a6-4df6-95c7-5e376df29d8e"
+       controls="controls"
+       autoplay="autoplay"
+       muted="muted"
+       loop="loop"
+       style="max-width: 100%;">
+  Your browser does not support the video tag.
+</video>
 
 <p align="center">
   <img src="assets/home.png" alt="Home: scan barcode" width="900">
