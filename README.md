@@ -1,3 +1,7 @@
+
+
+https://github.com/user-attachments/assets/921dcb39-b0ab-42d9-932b-569bd175b9d9
+
 # PriceSnap
 ### Scan a shelf barcode, check if the same product is cheaper online, buy it there if it is
 
@@ -22,7 +26,9 @@ This build uses sample retailer data. Live store feeds need API keys and break o
 
 ## Demo
 
-<video src="https://github.com/user-attachments/assets/6ef8f8bb-d1a6-4df6-95c7-5e376df29d8e"
+<video src="
+https://github.com/user-attachments/assets/d02a4dbe-51c4-4dc8-9d50-341ac2f921bc
+"
        controls="controls"
        autoplay="autoplay"
        muted="muted"
