@@ -90,6 +90,7 @@ struct ResultView: View {
     @State private var isLoading = true
     @State private var showWatchlist = false
 
+// sort the offers by price and in stock return -1 if a is first then b if b is first then 0 if they are equal
     var sortedPrices: [PriceResult] {
         (product?.offers ?? []).sorted {
             if $0.inStock != $1.inStock {
@@ -244,6 +245,7 @@ struct ResultView: View {
         .cornerRadius(16)
     }
 
+    // display the price cards for the offers
     var priceCards: some View {
         VStack(spacing: 1) {
             Text("PRICES")
