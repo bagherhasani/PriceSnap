@@ -1,4 +1,4 @@
-import { z } from 'zod'
+import { z } from 'zod' //runtime validation
 
 // runtime check: barcode is digits, length 8–14 (UPC/EAN)
 export const BarcodeSchema = z.string().regex(/^\d{8,14}$/)
@@ -26,5 +26,4 @@ export interface ProductResult {
   inStorePrice: number
 }
 
-// catalog row: same as ProductResult but no badge yet
-export type ProductSnapshot = Omit<ProductResult, 'dealScore'>
+
