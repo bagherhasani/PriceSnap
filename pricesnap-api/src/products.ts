@@ -160,18 +160,28 @@ const products: Record<string, ProductResult> = {
   },
 }
 
-// Missing catalog ID → Dasani (demo). Production would 404.
+// Missing item return Dasani (demo). Production would 404.
 function lookup(barcode: string): ProductResult {
   return products[barcode] ?? products[DASANI]
 }
 
-// Negative = a first. In-stock beats a cheaper OOS row.
+// funtion for sorting  which store row goes first then one that is in the stock -1 goes first 
 function compareOffers(a: RetailerOffer, b: RetailerOffer): number {
-  if (a.inStock !== b.inStock) {
-    return a.inStock ? -1 : 1
+  if (a.inStock === true && b.inStock === false) {
+    return -1
   }
-  return a.price - b.price
+  if (a.inStock === false && b.inStock === true) {
+    return 1
+  }
+  if (a.price < b.price) {
+    return -1
+  }
+  if (a.price > b.price) {
+    return 1
+  }
+  return 0
 }
+
 
 function sortOffers(offers: RetailerOffer[]): RetailerOffer[] {
   const copy = [...offers] // copy: sort mutates
@@ -179,6 +189,7 @@ function sortOffers(offers: RetailerOffer[]): RetailerOffer[] {
   return copy
 }
 
+// find the cheapest in-stock offer
 function findCheapest(offers: RetailerOffer[]): RetailerOffer | null {
   const sorted = sortOffers(offers)
   for (let i = 0; i < sorted.length; i++) {
@@ -197,6 +208,8 @@ function dealScore(bestPrice: number, avg: number): DealScore {
   if (bestPrice === avg) return 'fair'
   return 'overpriced'
 }
+
+
 
 function withScore(product: ProductResult): ProductResult {
   const offers = sortOffers(product.offers)
