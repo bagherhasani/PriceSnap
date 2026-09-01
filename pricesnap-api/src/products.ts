@@ -165,7 +165,7 @@ function lookup(barcode: string): ProductResult {
   return products[barcode] ?? products[DASANI]
 }
 
-// funtion for sorting  which store row goes first then one that is in the stock -1 goes first 
+// funtion for sorting  which store row goes fist to user. -1 put a above b, 1 put b above a, 0 nothing 
 function compareOffers(a: RetailerOffer, b: RetailerOffer): number {
   if (a.inStock === true && b.inStock === false) {
     return -1
@@ -184,7 +184,7 @@ function compareOffers(a: RetailerOffer, b: RetailerOffer): number {
 
 
 function sortOffers(offers: RetailerOffer[]): RetailerOffer[] {
-  const copy = [...offers] // copy: sort mutates
+  const copy = [...offers] // copy: sort (actuaul is swapping )
   copy.sort(compareOffers)
   return copy
 }
@@ -229,7 +229,10 @@ function withScore(product: ProductResult): ProductResult {
   }
 }
 
+// main api for the client side called inside server.ts
 export async function productRoutes(app: FastifyInstance) {
+
+  //return all the products which are samples as an array
   app.get('/products', async () => {
     const list = Object.values(products)
     const ranked: ProductResult[] = []
@@ -239,6 +242,8 @@ export async function productRoutes(app: FastifyInstance) {
     return ranked
   })
 
+
+  //return one product
   app.get<{ Params: { barcode: string } }>('/products/:barcode', async (request, reply) => {
     const parsed = BarcodeSchema.safeParse(request.params.barcode)
 

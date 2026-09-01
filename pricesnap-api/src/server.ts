@@ -7,6 +7,7 @@ app.get('/health', async () => {
   return { status: 'ok' }
 })
 
+//register the prodcuts routes on start
 app.register(productRoutes)
 
 // 0.0.0.0 so a real iPhone can hit this Mac on Wi-Fi (localhost would be the phone)
