@@ -10,7 +10,6 @@ https://github.com/user-attachments/assets/921dcb39-b0ab-42d9-932b-569bd175b9d9
 ![Fastify](https://img.shields.io/badge/Fastify-HTTP-black)
 ![Zod](https://img.shields.io/badge/Zod-Validation-purple)
 ![Docker](https://img.shields.io/badge/Docker-Packaging-2496ED)
-![Vitest](https://img.shields.io/badge/Vitest-Tests-729B1B)
 
 ## Project Overview
 
