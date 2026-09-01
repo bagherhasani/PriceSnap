@@ -2,6 +2,7 @@ import { ProductSnapshot, RetailerOffer } from './types'
 
 export const defaultBarcode = '049000028904'
 
+// search url for the store
 function searchUrl(store: string, query: string): string {
   const q = encodeURIComponent(query)
   if (store === 'Amazon') return `https://www.amazon.com/s?k=${q}`
@@ -11,6 +12,7 @@ function searchUrl(store: string, query: string): string {
   if (store === 'Best Buy') return `https://www.bestbuy.com/site/searchpage.jsp?st=${q}`
   return `https://www.google.com/search?q=${q}`
 }
+
 
 function priced(query: string, rows: Omit<RetailerOffer, 'url'>[]): RetailerOffer[] {
   return rows.map((row) => ({ ...row, url: searchUrl(row.store, query) }))
@@ -155,6 +157,7 @@ export const products: Record<string, ProductSnapshot> = {
   },
 }
 
+// take the barcode and return the product details
 export function resolveProduct(barcode: string): ProductSnapshot {
   return products[barcode] ?? products[defaultBarcode]
 }

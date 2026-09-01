@@ -1,0 +1,22 @@
+{
+  "name": "learnts",
+  "private": true,
+  "scripts": {
+    "01": "tsx 01-variables.ts",
+    "02": "tsx 02-if.ts",
+    "03": "tsx 03-arrays.ts",
+    "04": "tsx 04-objects.ts",
+    "05": "tsx 05-functions.ts",
+    "06": "tsx 06-union.ts",
+    "07": "tsx 07-copy-spread.ts",
+    "08": "tsx 08-sort.ts",
+    "09": "tsx 09-find.ts",
+    "10": "tsx 10-score.ts",
+    "11": "tsx 11-zod.ts"
+  },
+  "devDependencies": {
+    "tsx": "^4.19.1",
+    "typescript": "^5.5.4",
+    "zod": "^3.23.8"
+  }
+}

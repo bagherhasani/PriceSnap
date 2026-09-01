@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>PriceSnap API</title>
+  <style>
+    body {
+      font-family: -apple-system, system-ui, sans-serif;
+      max-width: 640px;
+      margin: 40px auto;
+      padding: 0 16px;
+      background: #f5f5f5;
+      color: #111;
+    }
+    h1 { margin: 0 0 8px; }
+    p { color: #555; }
+    form { display: flex; flex-wrap: wrap; gap: 8px; margin: 24px 0; }
+    input {
+      flex: 1;
+      min-width: 200px;
+      padding: 12px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+    }
+    button {
+      padding: 12px 18px;
+      font-size: 16px;
+      font-weight: 600;
+      color: #fff;
+      background: #16a34a;
+      border: 0;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    .badge { font-weight: 700; text-transform: uppercase; }
+    .great { color: #16a34a; }
+    .good { color: #4ade80; }
+    .fair { color: #ea580c; }
+    .overpriced { color: #dc2626; }
+    .card {
+      background: #fff;
+      border-radius: 12px;
+      padding: 16px;
+      margin-top: 16px;
+    }
+    .row {
+      display: flex;
+      justify-content: space-between;
+      padding: 10px 0;
+      border-bottom: 1px solid #eee;
+    }
+    .oos { color: #999; }
+    .err { color: #dc2626; }
+    pre {
+      overflow: auto;
+      font-size: 12px;
+      background: #111;
+      color: #d1d5db;
+      padding: 12px;
+      border-radius: 8px;
+    }
+  </style>
+</head>
+<body>
+  <h1>PriceSnap</h1>
+  <p>Paste your public API URL (Cloudflare), then Lookup. JSON comes from that server, not this file.</p>
+  <form id="form">
+    <input id="api" type="url" placeholder="https://something.trycloudflare.com" style="flex: 1 1 100%;" />
+    <input id="barcode" value="049000028904" inputmode="numeric" autocomplete="off" />
+    <button type="submit">Lookup</button>
+  </form>
+  <div id="out"></div>
+  <script>
+    const out = document.getElementById('out')
+    document.getElementById('form').addEventListener('submit', async (e) => {
+      e.preventDefault()
+      const base = document.getElementById('api').value.trim().replace(/\/$/, '')
+      const barcode = document.getElementById('barcode').value.trim()
+      if (!base) {
+        out.innerHTML = '<p class="err">Paste the https://….trycloudflare.com URL first.</p>'
+        return
+      }
+      out.innerHTML = '<p>Loading…</p>'
+      try {
+        const res = await fetch(base + '/products/' + encodeURIComponent(barcode))
+        const data = await res.json()
+        if (!res.ok) {
+          out.innerHTML = '<p class="err">' + (data.error || res.status) + '</p>'
+          return
+        }
+        const offers = (data.offers || []).map((o) =>
+          '<div class="row' + (o.inStock ? '' : ' oos') + '">' +
+            '<span>' + o.store + (o.inStock ? '' : ' (out of stock)') + '</span>' +
+            '<span>$' + o.price.toFixed(2) + '</span>' +
+          '</div>'
+        ).join('')
+        out.innerHTML =
+          '<div class="card">' +
+            '<h2>' + data.brand + ' ' + data.name + '</h2>' +
+            '<p class="badge ' + data.dealScore + '">' + data.dealScore + '</p>' +
+            '<p>Shelf $' + data.inStorePrice.toFixed(2) +
+            ' · 90-day avg $' + data.avgPrice90Day.toFixed(2) + '</p>' +
+            offers +
+          '</div>' +
+          '<p>Raw JSON</p><pre>' + JSON.stringify(data, null, 2) + '</pre>'
+      } catch (err) {
+        out.innerHTML = '<p class="err">Browser blocked the request (usually CORS). Open this in a new tab to see the JSON from the server:<br><a href="' +
+          base + '/products/' + encodeURIComponent(barcode) + '">' +
+          base + '/products/' + barcode + '</a></p>'
+      }
+    })
+  </script>
+</body>
+</html>

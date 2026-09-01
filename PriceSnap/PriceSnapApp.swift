@@ -7,6 +7,8 @@
 
 import SwiftUI
 
+
+//app starts here then we go to content view
 @main
 struct PriceSnapApp: App {
     var body: some Scene {

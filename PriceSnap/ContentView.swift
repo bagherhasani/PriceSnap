@@ -2,11 +2,12 @@ import SwiftUI
 
 struct ContentView: View {
     
-    @State private var isScanning = false
-    @State private var scannedBarcode = ""
-    @State private var showResult = false
-    @State private var showWatchlist = false
-    @State private var showCatalog = false
+    // state flags to change satate of the app.
+    @State private var isScanning = false // state variable to track if the scanner is active
+    @State private var scannedBarcode = "" // state variable to track the scanned barcode
+    @State private var showResult = false // state variable to track if the result view should be shown
+    @State private var showWatchlist = false // state variable to track if the watchlist view should be shown
+    @State private var showCatalog = false // state variable to track if the catalog view should be shown
     
     var body: some View {
         NavigationStack {
@@ -119,6 +120,8 @@ struct ContentView: View {
                     .padding(.top, 80)
                 }
             }
+
+            // go to show-result view
             .navigationDestination(isPresented: $showResult) {
                 ResultView(barcode: scannedBarcode)
             }

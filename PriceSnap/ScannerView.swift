@@ -1,5 +1,5 @@
 import SwiftUI
-import AVFoundation
+import AVFoundation // camera library for barcode scanning
 
 struct BarcodeScannerView: UIViewControllerRepresentable {
     var onBarcodeFound: (String) -> Void
@@ -48,6 +48,7 @@ class ScannerViewController: UIViewController, AVCaptureMetadataOutputObjectsDel
         }
     }
 
+// when the barcode is detected, stop the capture session and call the onBarcodeFound callback
     func metadataOutput(_ output: AVCaptureMetadataOutput,
                         didOutput metadataObjects: [AVMetadataObject],
                         from connection: AVCaptureConnection) {

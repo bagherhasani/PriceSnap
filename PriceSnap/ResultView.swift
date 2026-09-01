@@ -1,6 +1,7 @@
 import Foundation
 import SwiftUI
 
+// price result is a single price from a store
 struct PriceResult: Identifiable, Decodable {
     let store: String
     let price: Double
@@ -11,6 +12,7 @@ struct PriceResult: Identifiable, Decodable {
     var id: String { "\(store)-\(price)" }
 }
 
+// whole json file from ultiple stores
 struct ProductResult: Decodable, Identifiable {
     let barcode: String
     let name: String
@@ -24,6 +26,8 @@ struct ProductResult: Decodable, Identifiable {
     var id: String { barcode }
 }
 
+
+// only for the ui - we have this already in the api
 enum DealScore: String, Decodable {
     case great
     case good
@@ -58,6 +62,7 @@ enum DealScore: String, Decodable {
     }
 }
 
+//hard-coded product for the proof of concept and demo
 let previewProduct = ProductResult(
     barcode: "049000028904",
     name: "Purified Water 20 oz",
@@ -74,7 +79,8 @@ let previewProduct = ProductResult(
     inStorePrice: 2.49
 )
 
-let apiBaseURL = "http://172.16.135.121:3000"
+// main api the returns json
+let apiBaseURL = "https://lighter-experiences-cumulative-inventory.trycloudflare.com"
 
 struct ResultView: View {
     let barcode: String
@@ -425,6 +431,8 @@ struct ResultView: View {
         }
     }
 
+
+    // the call for the main api
     func loadProduct() async {
         if ProcessInfo.processInfo.environment["XCODE_RUNNING_FOR_PREVIEWS"] == "1" {
             product = previewProduct
@@ -473,6 +481,7 @@ struct ResultView: View {
 }
 
 #Preview {
+    // preview the result view hard-coded for Dasani water for now
     NavigationStack {
         ResultView(barcode: previewProduct.barcode)
     }

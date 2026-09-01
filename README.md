@@ -122,10 +122,6 @@ npm run dev
 - `GET /health`
 - `GET /products/0194252914687`
 
-```bash
-npm test
-```
-
 Unknown scans fall through to Dasani water (`049000028904`). Nike: `0194252914687`. Full catalog: `GET /products`.
 
 ### iOS
