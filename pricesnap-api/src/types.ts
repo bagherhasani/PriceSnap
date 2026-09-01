@@ -14,14 +14,14 @@ export interface RetailerOffer {
   url: string
 }
 
-// JSON the phone receives (includes dealScore)
+// JSON the phone receives. dealScore is filled in by withScore, not stored in the table.
 export interface ProductResult {
   barcode: string
   name: string
   brand: string
   image: string
   offers: RetailerOffer[]
-  dealScore: DealScore
+  dealScore?: DealScore
   avgPrice90Day: number
   inStorePrice: number
 }

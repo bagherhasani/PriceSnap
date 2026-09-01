@@ -3,7 +3,6 @@ import {
   BarcodeSchema,
   DealScore,
   ProductResult,
-  ProductSnapshot,
   RetailerOffer,
 } from './types.js'
 
@@ -28,7 +27,7 @@ function priced(query: string, rows: Omit<RetailerOffer, 'url'>[]): RetailerOffe
   return out
 }
 
-const products: Record<string, ProductSnapshot> = {
+const products: Record<string, ProductResult> = {
   '049000028904': {
     barcode: '049000028904',
     name: 'Purified Water 20 oz',
@@ -168,7 +167,7 @@ const products: Record<string, ProductSnapshot> = {
 }
 
 // Missing catalog ID → Dasani (demo). Production would 404.
-function lookup(barcode: string): ProductSnapshot {
+function lookup(barcode: string): ProductResult {
   return products[barcode] ?? products[DASANI]
 }
 
@@ -205,7 +204,7 @@ function dealScore(bestPrice: number, avg: number): DealScore {
   return 'overpriced'
 }
 
-function withScore(product: ProductSnapshot): ProductResult {
+function withScore(product: ProductResult): ProductResult {
   const offers = sortOffers(product.offers)
   const cheapest = findCheapest(offers)
 
