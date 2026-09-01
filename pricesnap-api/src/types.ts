@@ -1,19 +1,20 @@
-import { z } from 'zod' // import zod for validation
+import { z } from 'zod'
 
-export const BarcodeSchema = z.string().regex(/^\d{8,14}$/) // regex for barcode validation lenth 8-14
+// runtime check: barcode is digits, length 8–14 (UPC/EAN)
+export const BarcodeSchema = z.string().regex(/^\d{8,14}$/)
 
-export type DealScore = 'great' | 'good' | 'fair' | 'overpriced'//union type for deals 
+export type DealScore = 'great' | 'good' | 'fair' | 'overpriced'
 
-// store (will be one row)
+// one store row
 export interface RetailerOffer {
   store: string
   price: number
   logo: string
   inStock: boolean
-  url: string //link to buy
+  url: string
 }
 
-// product result
+// JSON the phone receives (includes dealScore)
 export interface ProductResult {
   barcode: string
   name: string
@@ -25,8 +26,5 @@ export interface ProductResult {
   inStorePrice: number
 }
 
-// drop the dealscore (because mock shdn't store a badge)
+// catalog row: same as ProductResult but no badge yet
 export type ProductSnapshot = Omit<ProductResult, 'dealScore'>
-
-
-

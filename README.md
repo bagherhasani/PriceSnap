@@ -71,7 +71,7 @@ Zod: barcode is 8–14 digits
         ↓
 sample offers (Amazon, Walmart, Target, eBay, Best Buy)
         ↓
-comparison.ts
+products.ts
   ignore out-of-stock as "best"
   cheapest available price
   deal score vs 90-day average
@@ -84,11 +84,9 @@ PriceSnap/
 ├── PriceSnap/           SwiftUI app
 ├── PriceSnap.xcodeproj
 └── pricesnap-api/
-    ├── src/types.ts
-    ├── src/mockData.ts
-    ├── src/comparison.ts
-    ├── src/routes/products.ts
-    └── src/server.ts
+    ├── src/server.ts      boot Fastify
+    ├── src/types.ts       JSON shapes + barcode regex
+    └── src/products.ts    sample data, ranking, GET routes
 ```
 
 ## Deal Score
@@ -106,7 +104,7 @@ Best price means cheapest **in stock**. Out-of-stock rows still show. They canno
 
 **Client:** Swift, SwiftUI, AVFoundation (EAN-13, EAN-8, UPC-E, QR, Code 128)
 
-**API:** TypeScript, Fastify, Zod, Vitest, Docker
+**API:** TypeScript, Fastify, Zod, Docker
 
 ## Setup
 
